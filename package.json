@@ -19,8 +19,6 @@
     "verify-runtime": "node scripts/verify-runtime.mjs",
     "restore-theme": "node scripts/restore-theme.mjs",
     "appearance": "node scripts/appearance.mjs",
-    "e2e-smoke": "node scripts/e2e-smoke.mjs",
-    "page-audit": "node scripts/page-audit.mjs",
-    "control-audit": "node scripts/control-audit.mjs"
+    "screenshot-audit": "node scripts/screenshot-audit.mjs"
   }
 }
