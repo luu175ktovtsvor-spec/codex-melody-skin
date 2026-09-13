@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Launch Codex with the Melody runtime injector and clean up the child app on exit. */
+/** Launch Codex with the Melody runtime injector. This script never stops Codex. */
 import { spawn, spawnSync } from 'node:child_process';
 import { access } from 'node:fs/promises';
 import { homedir } from 'node:os';
@@ -27,38 +27,12 @@ if (running) {
 }
 await access(appExecutable);
 await access(dataDir);
-const child = spawn(appExecutable, [`--user-data-dir=${dataDir}`, `--remote-debugging-port=${port}`], { stdio: 'inherit' });
-let stopping = false;
+const child = spawn(appExecutable, [`--user-data-dir=${dataDir}`, `--remote-debugging-port=${port}`], { stdio: 'inherit', detached: true });
+child.unref();
 process.env.CODEX_DEBUG_PORT = String(port);
 const injector = spawn(process.execPath, ['scripts/inject-theme.mjs'], { stdio: 'inherit', env: process.env });
-let watcher = null;
-const stop = () => {
-  if (stopping) return;
-  stopping = true;
-  injector.kill('SIGINT');
-  watcher?.kill('SIGINT');
-  if (!child.killed) child.kill('SIGTERM');
-  setTimeout(() => process.exit(process.exitCode ?? 0), 250).unref();
-};
-child.on('error', error => { console.error(error.message); process.exitCode = 1; stop(); });
-child.on('exit', (code, signal) => {
-  if (!stopping) {
-    console.error(`Codex exited (${signal || code}).`);
-    process.exitCode = code || 1;
-    stop();
-  }
-});
+child.on('error', error => { console.error(error.message); process.exitCode = 1; });
 injector.on('exit', (code, signal) => {
-  if (stopping) return;
-  if (code !== 0) { console.error(`Theme injection failed (${signal || code}).`); process.exitCode = code || 1; stop(); }
-  else {
-    watcher = spawn(process.execPath, ['scripts/watch-theme.mjs'], { stdio: 'inherit', env: process.env });
-    watcher.on('exit', (watchCode, watchSignal) => {
-      if (stopping) return;
-      process.exitCode = watchCode ?? (watchSignal ? 1 : 0);
-      stop();
-    });
-  }
+  if (code !== 0) console.error(`Theme injection failed (${signal || code}).`);
+  process.exitCode = code || 0;
 });
-process.on('SIGINT', stop);
-process.on('SIGTERM', stop);

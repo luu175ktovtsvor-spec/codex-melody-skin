@@ -60,7 +60,7 @@ npm run launch -- --background right
 npm run launch -- --background centered
 ```
 
-启动时会按所选构图生成对应主题。按 `Ctrl-C` 会停止这次启动的 Codex 和主题监听。
+启动时会按所选构图生成对应主题，然后完成一次注入。这个命令不会启动监听器，也不会负责关闭 Codex；需要关闭 Codex 时请在 App 内使用 `⌘Q` 正常退出。
 
 ## 两张背景图
 
