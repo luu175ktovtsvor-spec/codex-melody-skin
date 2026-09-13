@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Codex × My Melody · Skin Preview</title>
+  <link rel="stylesheet" href="../theme/theme.css" />
+  <style>
+    html, body { min-height: 100%; margin: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; }
+    .frame { width: min(1280px, calc(100vw - 48px)); margin: 24px auto; display: grid; grid-template-columns: 220px 1fr; min-height: 760px; overflow: hidden; border: 1px solid rgba(207,105,145,.2); border-radius: 24px; box-shadow: 0 28px 80px rgba(190,82,126,.2); background: rgba(255,249,252,.54); backdrop-filter: blur(26px); }
+    .sidebar { padding: 26px 16px; border-right: 1px solid rgba(207,105,145,.18); background: rgba(255,247,251,.52); }
+    .brand { display:flex; align-items:center; gap:10px; font-weight: 700; font-size: 18px; }
+    .brand-mark { width: 34px; height: 34px; border-radius: 50%; background: #ffd2e4; display:grid; place-items:center; color:#d75b88; }
+    nav { margin-top: 32px; display: grid; gap: 8px; }
+    nav div { padding: 11px 12px; border-radius: 12px; color: rgba(91,59,75,.78); }
+    nav div.active { background: rgba(247,166,196,.42); color:#34232d; font-weight:600; }
+    .main { position:relative; padding: 42px 56px; }
+    .eyebrow { color:#d75b88; letter-spacing:.08em; font-size: 12px; text-transform: uppercase; }
+    h1 { margin: 10px 0 8px; font-size: clamp(30px, 4vw, 56px); line-height:1.05; }
+    .lede { max-width: 610px; color: rgba(91,59,75,.78); line-height:1.7; }
+    .composer { margin-top: 44px; padding: 18px; border-radius: 18px; border: 1px solid rgba(207,105,145,.2); background: rgba(255,249,252,.82); box-shadow: 0 14px 36px rgba(190,82,126,.12); }
+    .composer textarea { width:100%; min-height: 84px; border: 0 !important; background: transparent !important; box-shadow:none !important; resize: vertical; font: inherit; }
+    .composer-footer { display:flex; justify-content:space-between; align-items:center; color: rgba(91,59,75,.65); font-size: 13px; }
+    .send { border:0; border-radius: 999px; padding: 9px 16px; color:white; background:#d75b88; }
+    .cards { margin-top: 22px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .card { padding: 18px; border:1px solid rgba(207,105,145,.18); border-radius:16px; background:rgba(255,249,252,.56); }
+    .card strong { display:block; margin-bottom:6px; }
+    .pet { position:absolute; right:36px; bottom:22px; width:192px; height:208px; background-image:url('../pet/spritesheet.png'); background-size:1536px 2288px; background-position:0 0; image-rendering:auto; transform:scale(.9); transform-origin:bottom right; animation: pet-sprite-idle 1.6s steps(6) infinite, pet-breathe 2.8s ease-in-out infinite; }
+    @keyframes pet-sprite-idle { from { background-position: 0 0; } to { background-position: -960px 0; } }
+    @keyframes pet-breathe { 0%,100%{transform:scale(.9) translateY(0)} 50%{transform:scale(.92) translateY(-4px)} }
+    @media (max-width: 800px) { .frame{grid-template-columns:1fr}.sidebar{display:none}.main{padding:32px 24px}.cards{grid-template-columns:1fr}.pet{right:10px;opacity:.7} }
+  </style>
+</head>
+<body data-melody-skin="true">
+  <section class="frame">
+    <aside class="sidebar"><div class="brand"><span class="brand-mark">♥</span> Codex</div><nav><div class="active">＋ 新建任务</div><div>◷ 今天</div><div>▣ 我的项目</div><div>▱ 对话记录</div><div>⚙ 设置</div></nav></aside>
+    <main class="main"><div class="eyebrow">My Melody workspace</div><h1>你好，<br/>我是 Codex ♥</h1><p class="lede">透明的浅粉玻璃层，把背景的微波留在后面，让代码、输入框和运行状态仍然清晰。</p><div class="composer"><textarea placeholder="描述你想要做的事情…"></textarea><div class="composer-footer"><span>⌘ Enter 运行</span><button class="send">发送 ↑</button></div></div><div class="cards"><div class="card"><strong>创建一个新的项目</strong><span>从想法开始搭建</span></div><div class="card"><strong>分析代码</strong><span>理解项目结构</span></div><div class="card"><strong>修复一个问题</strong><span>给出可验证的改动</span></div></div><div class="pet" aria-label="My Melody pet"></div></main>
+  </section>
+</body>
+</html>

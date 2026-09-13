@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "melody-sakura-desk",
+  "name": "My Melody · Sakura Desk",
+  "version": "1.0.0",
+  "appearance": "light",
+  "image": "melody-background-standard-right.png",
+  "colors": {
+    "background": "#fff9fc",
+    "panel": "rgba(255,247,251,.72)",
+    "panelAlt": "rgba(255,249,252,.88)",
+    "accent": "#d75b88",
+    "accentAlt": "#f7a6c4",
+    "secondary": "#9b7890",
+    "highlight": "#ffd2e4",
+    "text": "#34232d",
+    "muted": "rgba(91,59,75,.72)",
+    "line": "rgba(207,105,145,.20)"
+  },
+  "art": { "focusX": 0.76, "focusY": 0.52, "zoom": 1.0, "dim": 0.12, "taskMode": "ambient" }
+}

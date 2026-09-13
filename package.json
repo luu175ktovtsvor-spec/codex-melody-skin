@@ -1,0 +1,26 @@
+{
+  "name": "codex-melody-skin",
+  "version": "1.0.0",
+  "description": "A local My Melody-inspired theme and pet package for Codex on macOS.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "setup": "npm run build-injector && npm run validate && npm run install-pet",
+    "test": "npm run validate",
+    "validate": "node scripts/validate.mjs",
+    "build-injector": "node scripts/build-injector.mjs",
+    "install-pet": "node scripts/install-pet.mjs",
+    "uninstall-pet": "node scripts/uninstall-pet.mjs",
+    "inject-theme": "node scripts/inject-theme.mjs",
+    "launch": "node scripts/launch-theme.mjs",
+    "launch:centered": "node scripts/launch-theme.mjs --background centered",
+    "launch:right": "node scripts/launch-theme.mjs --background right",
+    "watch-theme": "node scripts/watch-theme.mjs",
+    "verify-runtime": "node scripts/verify-runtime.mjs",
+    "restore-theme": "node scripts/restore-theme.mjs",
+    "appearance": "node scripts/appearance.mjs",
+    "e2e-smoke": "node scripts/e2e-smoke.mjs",
+    "page-audit": "node scripts/page-audit.mjs",
+    "control-audit": "node scripts/control-audit.mjs"
+  }
+}

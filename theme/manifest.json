@@ -1,0 +1,8 @@
+{
+  "format": "codex-melody-theme",
+  "packageVersion": 1,
+  "themeId": "melody-sakura-desk",
+  "minimumCodexVersion": "26.908.40834",
+  "files": ["theme.json", "theme.css", "melody-background-standard-right.png", "melody-background-subject-centered.png"],
+  "capabilities": ["semantic-parts", "renderer-cdp", "reversible", "reduced-motion"]
+}

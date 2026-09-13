@@ -1,0 +1,34 @@
+import { readFile } from 'node:fs/promises';
+import { stat } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+const root = new URL('..', import.meta.url);
+const theme = JSON.parse(await readFile(new URL('./theme/theme.json', root), 'utf8'));
+const manifest = JSON.parse(await readFile(new URL('./theme/manifest.json', root), 'utf8'));
+const selectors = JSON.parse(await readFile(new URL('./theme/selectors.json', root), 'utf8'));
+if (manifest.format !== 'codex-melody-theme' || manifest.themeId !== theme.id) throw new Error('theme manifest mismatch');
+if (!theme.image || !manifest.files.includes(theme.image)) throw new Error('theme image is not declared');
+for (const file of manifest.files) {
+  if (typeof file !== 'string' || file.includes('..') || file.startsWith('/')) throw new Error(`invalid manifest file: ${file}`);
+  await stat(new URL(`./theme/${file}`, root));
+}
+if (!manifest.files.includes('theme.css') || !(await stat(new URL('./theme/theme.css', root))).size) throw new Error('theme.css is missing or empty');
+for (const key of ['shell-main','left-panel']) if (!selectors.selectors?.some(entry => entry.key === key && entry.selector)) throw new Error(`selector contract missing ${key}`);
+const css = await readFile(new URL('./theme/theme.css', root), 'utf8');
+if (!css.includes('data-melody-part')) throw new Error('theme.css is not scoped to semantic parts');
+const runtime = await readFile(new URL('./theme/theme-inject.js', root), 'utf8');
+if (['__MELODY_CSS__', '__MELODY_SELECTORS__', '__MELODY_THEME__', '__MELODY_ART__', '__MELODY_PET_ICON__'].some(token => runtime.includes(token))) throw new Error('theme-inject.js still has unresolved placeholders');
+const pet = JSON.parse(await readFile(new URL('./pet/pet.json', root), 'utf8'));
+if (!pet.displayName || !pet.description || !pet.spritesheetPath) throw new Error('pet.json missing required fields');
+const sprite = new URL(`./pet/${pet.spritesheetPath}`, root);
+const spriteStat = await stat(fileURLToPath(sprite));
+const png = await readFile(sprite);
+if (png.subarray(0, 8).compare(Buffer.from('89504e470d0a1a0a', 'hex')) !== 0) throw new Error('spritesheet is not a PNG');
+const width = png.readUInt32BE(16);
+const height = png.readUInt32BE(20);
+const colorType = png[25];
+if (![4, 6].includes(colorType)) throw new Error(`spritesheet has no alpha channel (PNG color type ${colorType})`);
+const expected = pet.spriteVersionNumber === 2 ? [1536, 2288] : [1536, 1872];
+if (pet.spriteVersionNumber === 2 && !(await stat(new URL('./pet/ANIMATION-MAP.md', root))).size) throw new Error('pet animation map is missing');
+await stat(new URL('./pet/home-icon.png', root));
+if (width !== expected[0] || height !== expected[1]) throw new Error(`spritesheet is ${width}x${height}; expected ${expected[0]}x${expected[1]}`);
+console.log(`OK pet ${pet.id}: ${width}x${height}, ${spriteStat.size} bytes`);

@@ -1,0 +1,84 @@
+{
+  "schema": "codex-melody-selectors/1",
+  "verifiedAgainst": {
+    "codexVersion": "26.908.40834",
+    "platform": "macos"
+  },
+  "selectors": [
+    {
+      "key": "shell-main",
+      "selector": "main:is(.main-surface, [data-app-shell-main-surface], [class*='_MainContentSurface_'], [role='main'])",
+      "required": true
+    },
+    {
+      "key": "left-panel",
+      "selector": ".app-shell-left-panel, [data-testid='sidebar'], [class*='_LeftPanel_']",
+      "required": true
+    },
+    {
+      "key": "header",
+      "selector": "header:is(.app-header-tint, [data-app-shell-header-edge-scroll], [class*='_Header_'])",
+      "required": false
+    },
+    {
+      "key": "home",
+      "selector": "[role='main']:has([data-testid='home-icon']), [data-testid='home-icon']",
+      "required": false
+    },
+    {
+      "key": "home-heading",
+      "selector": "[data-feature='game-source']",
+      "required": false
+    },
+    {
+      "key": "composer-root",
+      "selector": "[data-codex-composer-root]",
+      "required": false
+    },
+    {
+      "key": "composer",
+      "selector": ":is(.composer-surface-chrome, [class*='_ComposerLayoutRoot_'], [class*='_ComposerLayoutBody_'], [class*='_ComposerLayoutFooter_'], [class*='_ComposerHomeUtilityBar_'], [data-composer-surface-variant][data-composer-radius-variant], [data-testid='composer'])",
+      "required": false
+    },
+    {
+      "key": "thread",
+      "selector": ".thread-scroll-container, [class*='_Thread_'], [data-testid='conversation']",
+      "required": false
+    },
+    {
+      "key": "message",
+      "selector": ":is([data-message-author-role], [data-local-conversation-user-anchor], [data-local-conversation-final-assistant])",
+      "required": false
+    },
+    {
+      "key": "settings",
+      "selector": "[data-settings-panel-slug], [data-testid='settings-panel']",
+      "required": false
+    },
+    {
+      "key": "settings-card",
+      "selector": "body:has([data-settings-panel-slug]) div[class*='rounded-2xl'][class*='border'], body:has([data-settings-panel-slug]) [style*='--color-background-panel']",
+      "required": false
+    },
+    {
+      "key": "settings-main",
+      "selector": "body:has([data-settings-panel-slug]) div[class*='electron:bg-surface'][class*='flex h-full']",
+      "required": false
+    },
+    {
+      "key": "review-panel",
+      "selector": "aside[class*='z-[41]']",
+      "required": false
+    },
+    {
+      "key": "menu",
+      "selector": "[role='menu'], [data-radix-popper-content-wrapper]",
+      "required": false
+    },
+    {
+      "key": "dialog",
+      "selector": "[role='dialog'], [aria-modal='true']",
+      "required": false
+    }
+  ]
+}
