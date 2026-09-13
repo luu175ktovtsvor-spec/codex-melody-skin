@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** Launch Codex with the Melody runtime injector. This script never stops Codex. */
+/** Build, launch, and inject once. Codex is independent of this terminal. */
 import { spawn, spawnSync } from 'node:child_process';
 import { access } from 'node:fs/promises';
 import { homedir } from 'node:os';
@@ -33,9 +33,6 @@ await access(dataDir);
 const child = spawn(appExecutable, [`--user-data-dir=${dataDir}`, `--remote-debugging-port=${port}`], { stdio: 'ignore', detached: true });
 child.unref();
 process.env.CODEX_DEBUG_PORT = String(port);
-const injector = spawn(process.execPath, ['scripts/inject-theme.mjs'], { stdio: 'inherit', env: process.env });
-child.on('error', error => { console.error(error.message); process.exitCode = 1; });
-injector.on('exit', (code, signal) => {
-  if (code !== 0) console.error(`Theme injection failed (${signal || code}).`);
-  process.exitCode = code || 0;
-});
+const injection = spawnSync(process.execPath, ['scripts/inject-theme.mjs'], { stdio: 'inherit', env: process.env });
+if (injection.error) throw injection.error;
+if (injection.status !== 0) process.exit(injection.status || 1);
