@@ -27,7 +27,10 @@ if (running) {
 }
 await access(appExecutable);
 await access(dataDir);
-const child = spawn(appExecutable, [`--user-data-dir=${dataDir}`, `--remote-debugging-port=${port}`], { stdio: 'inherit', detached: true });
+// The app outlives this launcher. Do not inherit its terminal pipe: once the
+// launcher exits, Electron logging to a closed TTY can raise `write EIO` in
+// the main process during window shutdown.
+const child = spawn(appExecutable, [`--user-data-dir=${dataDir}`, `--remote-debugging-port=${port}`], { stdio: 'ignore', detached: true });
 child.unref();
 process.env.CODEX_DEBUG_PORT = String(port);
 const injector = spawn(process.execPath, ['scripts/inject-theme.mjs'], { stdio: 'inherit', env: process.env });
