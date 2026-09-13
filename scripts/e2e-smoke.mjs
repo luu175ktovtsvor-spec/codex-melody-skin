@@ -72,6 +72,7 @@ async function inspect(target) {
             parts: document.querySelectorAll('[data-melody-part]').length,
             composer: Boolean(input),
             composerRequired,
+            homeBounds: bounds(document.querySelector('[role="main"]:has([data-testid="home-icon"])')),
             headingBounds: bounds(document.querySelector('[data-melody-part="home-heading"]')),
             composerBounds: bounds(document.querySelector('[data-melody-part="composer-root"]')),
             overflowX: document.documentElement.scrollWidth > document.documentElement.clientWidth,
@@ -96,6 +97,9 @@ for (const target of list) {
   catch (error) { results.push({ id: target.id, url: target.url, error: error.message }); }
 }
 const relevant = results.filter(result => !result.url.includes('avatar-overlay'));
+if (!relevant.length || relevant.some(result => result.error || result.metrics?.length !== viewports.length)) {
+  throw new Error(`Incomplete smoke inspection: ${JSON.stringify(relevant)}`);
+}
 const inViewport = (bounds, width, height) => !bounds
   || (bounds.left >= -1 && bounds.top >= -1 && bounds.right <= width + 1 && bounds.bottom <= height + 1);
 const failures = relevant.flatMap(result => (result.metrics || []).filter(metric => {
@@ -103,10 +107,9 @@ const failures = relevant.flatMap(result => (result.metrics || []).filter(metric
   if (metric.composerRequired && !metric.composer) return true;
   if (!inViewport(metric.headingBounds, metric.width, metric.height)) return true;
   if (!inViewport(metric.composerBounds, metric.width, metric.height)) return true;
-  if (metric.headingBounds && metric.headingBounds.bottom - metric.headingBounds.top > 96) return true;
-  const nearSquare = metric.width / metric.height <= 1.25;
-  if (metric.layout === 'right' && nearSquare && !metric.backgroundSize.includes('130%')) return true;
-  if (metric.layout === 'right' && !nearSquare && !metric.backgroundSize.includes('cover')) return true;
+  if (metric.composerRequired && (!metric.homeBounds || !metric.headingBounds || !metric.composerBounds)) return true;
+  if (metric.homeBounds && [metric.headingBounds, metric.composerBounds].some(bounds => bounds
+    && (bounds.left < metric.homeBounds.left - 1 || bounds.right > metric.homeBounds.right + 1))) return true;
   return false;
 }));
 if (failures.length) throw new Error(`Smoke failures: ${JSON.stringify(failures)}`);
